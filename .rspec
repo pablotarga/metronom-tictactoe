@@ -1,0 +1,6 @@
+--format d
+--color
+--require spec_helper
+-I lib
+-I lib/aux
+-I lib/player_interface

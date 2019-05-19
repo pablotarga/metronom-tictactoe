@@ -1,0 +1,5 @@
+size: 3
+players:
+  X: keyboard
+  O: keyboard
+  A: ai

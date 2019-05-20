@@ -54,9 +54,9 @@ module Aux
     end
 
     # return all possible ranges to win a game (every column, every row and both diagonals)
-    def get_all_ranges
-      ranges = [get_diag1(), get_diag2()]
-      (0...size).each{|i| ranges += [get_column(i), get_row(i)]}
+    def get_all_ranges(position:false)
+      ranges = [get_diag1(position:position), get_diag2(position:position)]
+      (0...size).each{|i| ranges += [get_column(i,position:position), get_row(i,position:position)]}
 
       ranges
     end
@@ -71,32 +71,41 @@ module Aux
     end
 
     # get values(range) of informed row
-    def get_row(row)
+    def get_row(row, position:false)
       return [] unless row < size
       s = row*size
-      cells.values_at(*s...s+size)
+      idxs = (s...s+size).to_a
+      get_cells_values(idxs, position:position)
     end
 
     # get values(range) of informed column
-    def get_column(col)
+    def get_column(col, position:false)
       return [] unless col < size
       idxs = (0...size).map{|e| e*size + col}
-      cells.values_at(*idxs)
+      get_cells_values(idxs, position:position)
     end
 
     # get values(range) of main diagonal
-    def get_diag1
+    def get_diag1(position:false)
       idxs = (0...size).map{|e| pos2index(e,e)}
-      cells.values_at(*idxs)
+      get_cells_values(idxs, position:position)
     end
 
     # get values(range) of secondary diagonal
-    def get_diag2
+    def get_diag2(position:false)
       idxs = (0...size).map{|e| pos2index(e,size-(e+1))}
-      cells.values_at(*idxs)
+      get_cells_values(idxs, position:position)
     end
 
     private
+
+    def get_cells_values(idxs, position:false)
+      values = cells.values_at(*idxs)
+      return values unless position
+
+      pos = idxs.map{|i| index2pos(i)}
+      [pos, values].transpose.to_h
+    end
 
     def clone_from(origin)
       @size  = origin.size

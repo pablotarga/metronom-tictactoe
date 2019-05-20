@@ -6,7 +6,7 @@ require 'player'
 require 'game'
 
 class GameLoader
-  class InvalidPlayerConfig < ArgumentError
+  class InvalidPlayerConfigError < ArgumentError
   end
 
   # dictionary to translate config to PlayerInterface classes, will raise and ArgumentError if interface is not listed here
@@ -40,10 +40,10 @@ class GameLoader
   end
 
   def extract_players
-    raise InvalidPlayerConfig.new('Players must be a key, value where key is the symbol and the value is the interface') unless config['players'].is_a?(Hash)
+    raise InvalidPlayerConfigError.new('Players must be a key, value where key is the symbol and the value is the interface') unless config['players'].is_a?(Hash)
     config['players'].map do |symbol, interface|
       interface = interface.to_sym
-      raise InvalidPlayerConfig.new('Invalid PlayerInterface: `%s`' % interface) unless INTERFACES.include?(interface)
+      raise InvalidPlayerConfigError.new('Invalid PlayerInterface: `%s`' % interface) unless INTERFACES.include?(interface)
 
       Player.new(symbol, INTERFACES[interface])
     end

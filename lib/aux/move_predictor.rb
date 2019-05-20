@@ -70,18 +70,6 @@ module Aux
       end
 
       return 0
-
-      # # each row, column and diagonal with a play
-      # played_ranges = board.get_all_ranges.select{|e| e.any?{|i| !i.nil?} }
-      # single_player_ranges = played_ranges.select{|e| e.compact.uniq.size == 1}
-
-      # others_best_range = single_player_ranges.select{|e| e.compact.first == 0}.min{|a,b| a.count(nil) <=> b.count(nil)}
-      # my_best_range     = single_player_ranges.select{|e| e.compact.first == 1}.min{|a,b| a.count(nil) <=> b.count(nil)}
-
-      # return -1 if my_best_range.nil?
-      # return 1 if others_best_range.nil?
-
-      # others_best_range.count(nil) <=> my_best_range.count(nil)
     end
 
     def minimax_result(best, result, alpha, beta, maxing)

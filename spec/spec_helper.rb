@@ -3,7 +3,8 @@ require 'shoulda-matchers'
 require 'shared/player_interface'
 
 require 'aux/grid'
-require 'aux/move_predictor'
+require 'aux/move_predictor/minimax'
+require 'aux/move_predictor/available_position'
 require 'aux/board_printer'
 
 require 'player_interface/base'

@@ -1,4 +1,11 @@
 RSpec.describe PlayerInterface::Keyboard do
+  def silence!(&block)
+    original_stdout = $stdout
+    $stdout = Tempfile.new('rspec.stdout')
+    yield
+    $stdout = original_stdout
+  end
+
   let(:board){Board.new(3)}
   let(:player){Player.new('X', described_class)}
   subject{ player.interface }
@@ -35,13 +42,13 @@ RSpec.describe PlayerInterface::Keyboard do
     it 'should ask multiple times if col is not valid' do
       allow(subject).to receive(:gets){ @gets_options ||= ['1,1','0,1','4,1'];@gets_options.rotate!.first}
       expect(subject).to receive(:gets).exactly(3).times
-      subject.pick(board).inspect
+      silence!{subject.pick(board)}
     end
 
     it 'should ask multiple times if row is not valid' do
       allow(subject).to receive(:gets){ @gets_options ||= ['1,1','1,0','1,4'];@gets_options.rotate!.first}
       expect(subject).to receive(:gets).exactly(3).times
-      subject.pick(board).inspect
+      silence!{subject.pick(board)}
     end
 
     it 'should loop if position is not available' do
@@ -50,7 +57,7 @@ RSpec.describe PlayerInterface::Keyboard do
 
       allow(subject).to receive(:gets){ @gets_options ||= ['1,1','1,2','2,1'];@gets_options.rotate!.first}
       expect(subject).to receive(:gets).exactly(2).times
-      subject.pick(board).inspect
+      silence!{subject.pick(board)}
     end
   end
 

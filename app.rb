@@ -1,5 +1,10 @@
 require 'yaml'
 require 'game_loader'
 
-game = GameLoader.load('config.yml', YAML)
-game.start!
+begin
+  game = GameLoader.load('config.yml', YAML)
+  game.start!
+rescue GameLoader::InvalidPlayerConfigError => e
+  puts 'Players not configured properly'
+  exit
+end

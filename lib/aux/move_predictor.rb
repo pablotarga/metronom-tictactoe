@@ -18,8 +18,10 @@ module Aux
 
       playing_order.rotate! until playing_order.first == player
 
-      best = minimax(board, playing_order, depth:depth||board.size)
-      best[:moves].first
+      best_prediction = minimax(board, playing_order, depth:depth||board.size)
+
+      return best_available_position if best_prediction[:score] == 0
+      best_prediction[:moves].first
     end
 
     private
@@ -45,7 +47,7 @@ module Aux
     end
 
     def score(board, depth)
-      return 0 if board.draw?
+      return -1 if board.draw?
       return 10*depth if board.win? && board.winner == player
       return -10 if board.win? &&  board.winner != player
 
@@ -113,5 +115,41 @@ module Aux
       _board
     end
 
+    def best_range(against:false)
+      player_ranges = board.get_all_ranges(position:true).select do |e|
+        cell_players = e.values.compact.uniq
+        is_player = cell_players.first == player
+        cell_players.size == 1 && (against ? !is_player : is_player)
+      end
+
+      return nil if player_ranges.size == 0
+
+      player_ranges.each_with_object({moves_left:board.size}) do |r, best|
+        moves_left = r.values.count(nil)
+        if best[:moves_left] > moves_left
+          best[:moves_left] = moves_left
+          best[:available_positions] = r.select{|k,v| v.nil?}.keys
+        end
+      end
+    end
+
+    def best_available_position
+      my_move = best_range
+      against = best_range(against:true)
+
+      return random_move if my_move.nil? && against.nil?
+      return against[:available_positions].sample if my_move.nil? && !against.nil?
+      return my_move[:available_positions].sample if !my_move.nil? && against.nil?
+
+      if my_move[:moves_left] < against[:moves_left]
+        my_move[:available_positions].sample
+      else
+        against[:available_positions].sample
+      end
+    end
+
+    def random_move
+      board.available_positions.sample
+    end
   end
 end

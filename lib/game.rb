@@ -48,6 +48,7 @@ class Game
       _rules << "\nAI:"
       _rules << '  AI would try to figure which move would be the most eficient'
       _rules << '  It is using minimax algorithm with pruning and basic score checkings'
+      _rules << '  If minimax do not find the best outcome, then a basic comparison strategy will define a best option'
       _rules << '  This decision is made automatically and do not need human intervention'
     end
 

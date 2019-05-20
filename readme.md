@@ -49,9 +49,13 @@ The players config is set on ```key: value``` notation where the key is the symb
 
 # Brief explanation about classes
 
-## Aux::MovePredictor
+## Aux::MovePredictor::AvailablePositions
 
-This is the AI brain it receives a player and the board to analise and predict the best move to current player. It uses minimax algorithm with pruning and a depth limit to build different scenarios and determine the best outcome.
+This is the AI brain it receives a player and the board to analise and predict the best move to current player. It check on every range that has a uniq player and flag the best range for the current player and the best range of the most well positioned opponent then compare to decide if should invest on the best range or block opponents offensive range.
+
+## Aux::MovePredictor::Minimax
+
+This is the AI brain it receives a player and the board to analise and predict the best move to current player. It uses minimax algorithm with pruning and a depth limit to build different scenarios and determine the best outcome. Works well on 3x3 board but fails badly on bigger boards, need to work a better solution for the scoring method, currently not being used by the AI interface.
 
 ## Aux::Grid
 

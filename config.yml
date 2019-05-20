@@ -1,5 +1,5 @@
-size: 3
+size: 4
 players:
-  X: keyboard
-  O: keyboard
+  '☂': keyboard
+  '☁': keyboard
   A: ai
